@@ -1,16 +1,11 @@
 package com.horta.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import java.util.Date;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -19,26 +14,25 @@ public class Sensor {
     @Id
     @GeneratedValue
     private int id;
+    @Column
     @JsonProperty
     private String name;
+    @Column
     @JsonProperty
     private String unit;
+    @Column
     @JsonProperty
     private String sensor;
+    @Column
     @JsonProperty
     private Float value;
+    @Column
     @JsonProperty
     private Integer status;
-    @JsonProperty
-    private String datetime;
+    @Column(name = "datetime")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date datetime;
 
-    public Sensor(String name, String unit, String sensor, String value, String status, String datetime) {
-        this.name = name;
-        this.unit = unit;
-        this.sensor = sensor;
-        this.value = Float.parseFloat(value);
-        this.status = Integer.parseInt(status);
-        this.datetime = datetime;
-    }
 }
 
