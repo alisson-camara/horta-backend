@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Example;
+import io.swagger.annotations.ExampleProperty;
 
 @RestController
 public class SensorTempController {
@@ -21,13 +23,15 @@ public class SensorTempController {
     }
 
     @PostMapping(value = "/add-sensor-data-list", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<Sensor> addSensorDataList(@RequestBody @ApiParam(example = ConstantsExamples.ADD_SENSOR_DATA_LIST_EXAMPLE) List<Sensor> jsonList){
+    public List<Sensor> addSensorDataList(
+            @RequestBody @ApiParam(examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ConstantsExamples.ADD_SENSOR_DATA_LIST_EXAMPLE))) List<Sensor> jsonList) {
         this.sensorRepository.saveAll(jsonList);
         return jsonList;
-    } 
+    }
 
     @PostMapping(value = "/add-sensor-data", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Sensor addSingleSensorData(@RequestBody @ApiParam(example = ConstantsExamples.ADD_SENSOR_DATA_EXAMPLE) Sensor json){
+    public Sensor addSingleSensorData(
+            @RequestBody @ApiParam(examples = @Example(value = @ExampleProperty(mediaType = "application/json", value = ConstantsExamples.ADD_SENSOR_DATA_EXAMPLE))) Sensor json) {
         this.sensorRepository.save(json);
         return json;
     }
