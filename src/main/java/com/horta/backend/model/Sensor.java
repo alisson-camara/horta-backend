@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 public class Sensor {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     @Column
     @JsonProperty
