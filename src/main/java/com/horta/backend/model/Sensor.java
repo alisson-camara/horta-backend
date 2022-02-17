@@ -29,7 +29,7 @@ public class Sensor {
     @Column
     @JsonProperty
     private Integer status;
-    @Column(name = "datetime")
+    @Column
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date datetime;
