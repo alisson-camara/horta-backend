@@ -2,7 +2,9 @@ package com.horta.backend.controller;
 
 import java.util.List;
 
+import com.horta.backend.model.BatteryData;
 import com.horta.backend.model.Sensor;
+import com.horta.backend.repository.BatteryRepository;
 import com.horta.backend.repository.SensorRepository;
 
 import org.springframework.http.MediaType;
@@ -17,11 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SensorTempController {
 
-    final
-    SensorRepository sensorRepository;
+    final SensorRepository sensorRepository;
+    final BatteryRepository batteryRepository;
 
-    public SensorTempController(SensorRepository sensorRepository) {
+    public SensorTempController(SensorRepository sensorRepository, BatteryRepository batteryRepository) {
         this.sensorRepository = sensorRepository;
+        this.batteryRepository = batteryRepository;
     }
 
     @PostMapping(value = "/add-sensor-data-list", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -36,6 +39,31 @@ public class SensorTempController {
             @RequestBody Sensor json) {
         this.sensorRepository.save(json);
         return json;
+    }
+
+    @PostMapping(value = "/add-battery-level-history", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<BatteryData> addBatteryLevelHistory(
+            @RequestBody List<BatteryData> jsonList) {
+        this.batteryRepository.saveAll(jsonList);
+        return jsonList;
+    }
+
+    @PostMapping(value = "/add-battery-level", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public BatteryData addSingleBatteryLevel(
+            @RequestBody BatteryData json) {
+        this.batteryRepository.save(json);
+        return json;
+    }
+
+
+    @GetMapping("/read-battery-level")
+    public BatteryData readBatteryLevel() {
+        return batteryRepository.findTopByOrderByDatetimeDesc().orElse(null);
+    }
+
+    @GetMapping("/read-battery-history")
+    public List<BatteryData> readBatteryHistory(@RequestParam String board_name) {
+        return batteryRepository.findByBoardOrderByDatetime(board_name);
     }
 
     @GetMapping("/read-sensor-data")
